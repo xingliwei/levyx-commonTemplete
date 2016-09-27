@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--destroy-method="close"的作用是在bean销毁的时候执行BasicDataSource的destroy方法，
+    与之先关的还有init-method是在容器初始化的时候调用的方法，
+    另一种实现方式是实现InitializingBean和DisposableBean接口-->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="defaultAutoCommit" value="${defaultAutoCommit}"/>
+        <property name="initialSize" value="${initialSize}"/>
+        <property name="minIdle" value="${minIdle}" />
+        <property name="maxWaitMillis" value="${maxWaitMillis}" />
+        <property name="validationQuery" value="${validationQuery}" />
+        <property name="testOnReturn" value="${testOnReturn}" />
+        <property name="testWhileIdle" value="${testWhileIdle}" />
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--JDBC的DataSource。这可以是任意的DataSource,必须的属性-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--用来指定MyBatis的xml配置文件路径的-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--如果在mybatis-config.xml利用<mappers>进行xml映射文件的配置，就可以不用配置下面的mapperLocations属性了-->
+        <!--
+        <property name="mappperLocations" value="classpath:mybatis/*.xml"/>
+        -->
+    </bean>
+
+    <!--它将会查找类路径下的映射器并自动将它们创建成MapperFactoryBean，
+        basePackage 属性是让你为映射器接口文件设置基本的包路径,你可以使用分号或逗号
+        作为分隔符设置多于一个的包路径。每个映射器将会在指定的包路径中递归地被搜索到。
+        注 意 , 没有必要去指定SqlSessionFactory 或 SqlSessionTemplate , 因为 MapperScannerConfigurer 将会创建MapperFactoryBean，
+        之后自动装配。但是,如果你使 用了一个 以上的 DataSource，那 么自动装配可能会失效 。这种情况下 ，
+        你可以使用 sqlSessionFactoryBeanName 或 sqlSessionTemplateBeanName 属性来设置正确的 bean 名称来使用。
+    -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" lazy-init="true">
+        <property name="basePackage" value="com.xlw.levyx.mapper.client"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+</beans>

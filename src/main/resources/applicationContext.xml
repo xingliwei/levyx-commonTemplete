@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--定义属性文件位置，classpath* 和 classpath的区别：
+        classpath* : 加载所有jar包中的文件
+        classpath ：只加载一个文件，加载的文件取决于jar包的加载顺序
+    -->
+    <context:property-placeholder location="classpath*:application.properties"/>
+
+    <!--配置了这个标签后，spring可以自动去扫描base-pack下面或者子包下面的java文件，
+    如果扫描到有@Component @Controller @Service等这些注解的类，则把这些类注册为bean-->
+    <context:component-scan base-package="com.xlw.levyx.api"/>
+    <!--<context:component-scan base-package="com.xlw.levyx.mapper.client"/>-->
+
+    <!--配置<mvc:default-servlet-handler />后，会在Spring MVC上下文中定义一个
+    org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler，
+    它会像一个检查员，对进入DispatcherServlet的URL进行筛查，如果发现是静态资源的请求，
+    就将该请求转由Web应用服务器默认的Servlet处理，如果不是静态资源的请求，才由DispatcherServlet继续处理-->
+    <mvc:default-servlet-handler/>
+
+    <!--<mvc:annotation-scan/>是告知Spring，我们启用注解驱动。
+    然后Spring会自动为我们注册RequestMappingHandlerMapping、BeanNameUrlHandlerMapping、
+    RequestMappingHandlerAdapter、HttpRequestHandlerAdapter、SimpleControllerHandlerAdapter、
+    ExceptionHandlerExceptionResolver、ResponseStatusExceptionResolver、DefaultHandlerExceptionResolver
+    这几个Bean到工厂中，来处理我们的请求
+    详情见：https://my.oschina.net/HeliosFly/blog/205343-->
+    <mvc:annotation-driven/>
+
+    <!--配置编码过滤器，设置编码格式-->
+    <bean id="encodingFilter" class="org.springframework.web.filter.CharacterEncodingFilter">
+        <property name="encoding" value="utf-8" />
+        <property name="forceEncoding" value="true" />
+    </bean>
+
+    <!--导入其他配置文件-->
+    <import resource="spring/applicationContext-component.xml"/>
+    <import resource="spring/applicationContext-redis.xml"/>
+    <import resource="spring/applicationContext-mongo.xml"/>
+
+</beans>
