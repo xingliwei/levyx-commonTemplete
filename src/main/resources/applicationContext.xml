@@ -45,6 +45,13 @@
         <property name="forceEncoding" value="true" />
     </bean>
 
+    <!--TODO 解释下面两个标签含义-->
+    <aop:aspectj-autoproxy>
+        <aop:include name="timingAspect" />
+    </aop:aspectj-autoproxy>
+
+    <bean id="timingAspect" class="org.perf4j.slf4j.aop.TimingAspect" />
+
     <!--导入其他配置文件-->
     <import resource="spring/applicationContext-component.xml"/>
     <import resource="spring/applicationContext-redis.xml"/>

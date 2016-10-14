@@ -2,6 +2,7 @@ package com.xlw.levyx.api.controller;
 
 import com.xlw.levyx.api.service.UserService;
 import com.xlw.levyx.mapper.model.User;
+import org.perf4j.aop.Profiled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Profiled(tag = "get_user_by_id")
     @ResponseBody
     @RequestMapping(value = "/user",method = RequestMethod.GET)
     public User hello(@RequestParam(name="userId",required = true) String userId){
