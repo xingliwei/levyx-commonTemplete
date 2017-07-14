@@ -26,7 +26,7 @@
     </appender>
 
     <!-- db appender -->
-    <appender name="db_appender" class="com.xlw.levyx.log.DailyDBAppender">
+    <appender name="db_appender" class="com.xlw.levyx.dblog.DailyDBAppender">
         <param name="driverClass" value="${pfmlog.jdbc.driverClassName}" />
         <param name="url" value="${pfmlog.jdbc.url}" />
         <param name="username" value="${pfmlog.jdbc.username}" />

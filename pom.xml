@@ -241,6 +241,7 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>**/*.properties</include>
+                    <include>**/log4j.xml</include>
                 </includes>
             </resource>
         </resources>
