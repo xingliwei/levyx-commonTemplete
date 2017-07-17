@@ -74,6 +74,10 @@
             <mvc:mapping path="/student/**"/>
             <bean class="com.xlw.levyx.api.interceptor.StudentInterceptor"/>
         </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/user/**"/>
+            <bean class="com.xlw.levyx.api.interceptor.UserInterceptor"/>
+        </mvc:interceptor>
     </mvc:interceptors>
 
     <!--导入其他配置文件-->
