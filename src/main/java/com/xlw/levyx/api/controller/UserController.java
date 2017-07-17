@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Profiled(tag = "get_user_by_id")
+    @Profiled(tag = "get_user_by_id")//db-appender日志的tag
     @ResponseBody
     @RequestMapping(value = "/user",method = RequestMethod.GET)
     public User hello(@RequestParam(name="userId",required = true) String userId){

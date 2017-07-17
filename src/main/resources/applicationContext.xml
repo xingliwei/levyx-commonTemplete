@@ -46,11 +46,35 @@
     </bean>
 
     <!--TODO 解释下面两个标签含义-->
+    <!--
+        网上找了好多例子，还是没有太弄懂这个标签的含义
+        我的理解是，配置了这个标签，就可以使用注解方式进行AOP切面编程了
+        Spring默认不支持@AspectJ风格的切面声明，为了支持需要使用如下的标签配置
+        这样Spring就能发现@AspectJ风格的切面并且将切面应用到目标对象。
+    -->
     <aop:aspectj-autoproxy>
         <aop:include name="timingAspect" />
     </aop:aspectj-autoproxy>
 
+    <!--
+        这个是perf4j实现日志监控的切面类，在使用监控时需要在方法上加上@Profile注解
+    -->
     <bean id="timingAspect" class="org.perf4j.slf4j.aop.TimingAspect" />
+
+    <mvc:interceptors>
+        <!-- 定义全局拦截器，bean的顺序决定执行顺序 -->
+        <bean class="com.xlw.levyx.api.interceptor.GlobalInterceptor"/>
+
+        <mvc:interceptor>
+            <!--
+                拦截器过滤的路径，设置之后该拦截器只会拦截设置路径的请求
+                /student/** 这种配置会过滤掉 localhost:port/projectName/student/.../....这种类型的请求
+                /**/student/** 这种配置会过滤掉路径所有带有student的请求
+             -->
+            <mvc:mapping path="/student/**"/>
+            <bean class="com.xlw.levyx.api.interceptor.StudentInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!--导入其他配置文件-->
     <import resource="spring/applicationContext-component.xml"/>
