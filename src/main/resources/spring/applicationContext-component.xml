@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -11,6 +12,8 @@
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
@@ -53,5 +56,49 @@
         <property name="basePackage" value="com.xlw.levyx.mapper.client"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
+
+
+    <!-- 声明式事务管理 -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--事务增强 -->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <!-- 事务属性定义 -->
+        <tx:attributes>
+            <!--
+                all methods starting with 'get' and 'find' are read-only
+                其中*为通配符，即代表以get为开头的所有方法，即表示符合此命名规则的方法作为一个事务
+                propagation="REQUIRED"代表支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择
+                tx:method的属性：
+                    timeout：事务超时的时间（以秒为单位）
+                    name：与事务属性关联的方法名。通配符（*）可以用来指定一批关联到相同的事务属性的方法。如：'get*'、'handle*'、'on*Event'等等。
+                    propagation：事务传播行为
+                    isolation：
+                    read-only：事务是否只读
+                    rollback-for：将被触发进行回滚的 Exception(s)；以逗号分开。如：'com.foo.MyBusinessException,ServletException'
+                    no-rollback-for：不被触发进行回滚的Exception(s)；以逗号分开。
+            -->
+            <tx:method name="get*" read-only="true" />
+            <tx:method name="find*" read-only="true" />
+            <tx:method name="continue*" propagation="REQUIRED" />
+            <tx:method name="*" />
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- 使用tx/aop来配置 -->
+    <aop:config>
+        <!--
+            通过aop定义事务增强切面
+            expression 其中第一个*代表返回值，第二*代表service下子包，第三个*代表方法名，“（..）”代表方法参数。
+        -->
+        <aop:pointcut id="serviceOperation" expression="execution(* com.xlw.levyx.api.service.*Service.*(..))"/>
+        <!--
+            引用事务增强
+            aop:advisor标签就是把上面我们所配置的事务管理两部分属性整合起来作为整个事务管理
+        -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
+    </aop:config>
 
 </beans>
