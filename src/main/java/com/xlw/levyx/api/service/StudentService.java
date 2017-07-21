@@ -1,11 +1,14 @@
 package com.xlw.levyx.api.service;
 
 import com.xlw.levyx.api.utils.CommonUtils;
-import com.xlw.levyx.mapper.client.BaseStudentMapper;
-import com.xlw.levyx.mapper.model.BaseStudent;
+import com.xlw.levyx.mapper.client.StudentMapper;
+import com.xlw.levyx.mapper.model.Student;
+import com.xlw.levyx.mapper.model.StudentExample;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by levyx on 2017/7/17.
@@ -13,14 +16,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentService {
     @Autowired
-    private BaseStudentMapper baseStudentMapper;
+    private StudentMapper studentMapper;
 
-    public void save(BaseStudent baseStudent){
+    public void save(Student baseStudent){
         if (StringUtils.isBlank(baseStudent.getId())){
             baseStudent.setId(CommonUtils.uuid());
-            baseStudentMapper.insertSelective(baseStudent);
+            studentMapper.insertSelective(baseStudent);
         } else {
-            baseStudentMapper.updateByPrimaryKeySelective(baseStudent);
+            studentMapper.updateByPrimaryKeySelective(baseStudent);
         }
+    }
+
+
+    public List<Student> page(Integer limit,Integer offset){
+        StudentExample example = new StudentExample();
+        example.setLimitStart(offset);
+        example.setLimitEnd(limit);
+        return studentMapper.selectByExample(example);
     }
 }

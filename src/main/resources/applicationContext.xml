@@ -80,6 +80,20 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+    <!-- 视图解析器 -->
+    <!--
+        在spring 中，常用的ViewResolver 有如下几种：
+            InternalResourceViewResolver	将逻辑视图名字解析为一个路径
+            BeanNameViewResolver	将逻辑视图名字解析为bean的Name属性，从而根据name属性，找定义View的bean
+            ResourceBundleResolver	和BeanNameViewResolver一样，只不过定义的view-bean都在一个properties文件中，用这个类进行加载这个properties文件
+            XmlViewResolver	和ResourceBundleResolver一样，只不过定义的view-bean在一个xml文件中，用这个类来加载xml文件
+        一篇针对viewResolver的文章：https://my.oschina.net/HeliosFly/blog/221392
+    -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
     <!--导入其他配置文件-->
     <import resource="spring/applicationContext-component.xml"/>
     <import resource="spring/applicationContext-redis.xml"/>

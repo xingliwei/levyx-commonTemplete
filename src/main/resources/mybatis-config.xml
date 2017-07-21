@@ -21,7 +21,7 @@
     <!--映射器-->
     <mappers>
         <mapper resource="mybatis/mapper/UserMapper.xml"/>
-        <mapper resource="mybatis/mapper/BaseStudentMapper.xml"/>
+        <mapper resource="mybatis/mapper/StudentMapper.xml"/>
         <mapper resource="mybatis/mapper/StudentScoreMapper.xml"/>
         <mapper resource="mybatis/mapper/StudentSubjectMapper.xml"/>
     </mappers>
