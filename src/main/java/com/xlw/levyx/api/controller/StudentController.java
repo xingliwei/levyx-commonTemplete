@@ -1,6 +1,7 @@
 package com.xlw.levyx.api.controller;
 
 import com.xlw.levyx.api.convert.DateConvert;
+import com.xlw.levyx.api.model.ObjectResponse;
 import com.xlw.levyx.api.model.Response;
 import com.xlw.levyx.api.service.StudentService;
 import com.xlw.levyx.mapper.model.Student;
@@ -34,6 +35,14 @@ public class StudentController {
                               @RequestParam(value = "offset",defaultValue = "0")Integer offset){
         ModelAndView modelAndView = new ModelAndView("studentList","model",studentService.page(limit,offset));
         return modelAndView;
+    }
+
+    @RequestMapping("detail")
+    @ResponseBody
+    public Response detail(@RequestParam(value = "studentId",required = true)String studentId){
+        ObjectResponse<Student> response = new ObjectResponse<>();
+        response.setInfo(studentService.getStudent(studentId));
+        return response;
     }
 
     @InitBinder
