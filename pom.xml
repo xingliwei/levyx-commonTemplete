@@ -34,13 +34,19 @@
         <spring.eh.version>1.1.1</spring.eh.version>
         <okhttp.version>2.5.0</okhttp.version>
         <jexl-version>1.1</jexl-version>
+        <levyx.common.version>1.0-SNAPSHOT</levyx.common.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.xlw.levyx</groupId>
+            <artifactId>levyx-commonModel</artifactId>
+            <version>${levyx.common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.xlw.levyx</groupId>
             <artifactId>levyx-commonMapper</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${levyx.common.version}</version>
         </dependency>
         <!--per4j中自定义appender使用的，不知道什么作用-->
         <dependency>

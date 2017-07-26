@@ -94,6 +94,11 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <!-- hessian -->
+    <bean id="articleClient" class="com.xlw.levyx.api.client.ArticleClient">
+        <property name="url" value="${hessian.service.url}" />
+    </bean>
+
     <!--导入其他配置文件-->
     <import resource="spring/applicationContext-component.xml"/>
     <import resource="spring/applicationContext-redis.xml"/>
