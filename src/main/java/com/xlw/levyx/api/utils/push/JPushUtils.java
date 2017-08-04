@@ -22,7 +22,7 @@ public class JPushUtils {
     private static final String appKey = Global.getConfig("jpushAppkey");
     private static final String masterSecret = Global.getConfig("jpushMasterSecret");//每个应用都对应一个masterSecret线上
 
-    private static JPushClient jpush = new JPushClient(masterSecret, appKey);
+    private static JPushClient jpush = new JPushClient("51b5ef0fb25dfd931a41197f", "801e24f607a343b04b0f45d1");
     /**
      * 安卓
      * */
@@ -105,7 +105,7 @@ public class JPushUtils {
         pushModel.setContent("极光推送内容。。。");
         pushModel.setPhoneType(1);
         //registerId一般在前端注册的时候纪录到用户信息中，是推送给用户信息的唯一标识
-        pushModel.setRegisterId("设备对应的registerId");
+        pushModel.setRegisterId("171976fa8ab16da0521");//设备对应的registerId
         JPushUtils.send(jPushUtils -> jPushUtils.sendNotificationToUser(pushModel));
     }
 }

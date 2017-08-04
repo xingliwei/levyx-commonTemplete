@@ -96,7 +96,7 @@ public class WxRestAPI {
             String topicColor = "#173177";
             String message = "测试微信消息！";
             String title = "测试";
-            String openId = "";
+            String openId = "oyQp8s3HHThRQ1xIDAdrydr6Lrg0";
             LinkedHashMap<String, TemplateMessageItem> dataMap = new LinkedHashMap<String, TemplateMessageItem>();
             dataMap.put("first", new TemplateMessageItem(message, "#173177"));
             dataMap.put("keyword1", new TemplateMessageItem(title, "#173177"));
